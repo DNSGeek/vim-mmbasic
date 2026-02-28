@@ -1,0 +1,205 @@
+*mmbasic.txt*  MMBasic syntax support for Vim
+
+                    MMBASIC REFERENCE MANUAL
+
+Author:  Based on PicoMite User Manual V6.02.00
+License: Same as Vim itself (see |license|)
+
+==============================================================================
+CONTENTS                                                    *mmbasic-contents*
+
+    1. Introduction .......................... |mmbasic-intro|
+    2. Installation .......................... |mmbasic-install|
+    3. Features .............................. |mmbasic-features|
+    4. Syntax Highlighting ................... |mmbasic-syntax|
+    5. Filetype Settings ..................... |mmbasic-filetype|
+    6. Quick Reference ....................... |mmbasic-quickref|
+
+==============================================================================
+1. INTRODUCTION                                                *mmbasic-intro*
+
+This plugin provides syntax highlighting and filetype detection for MMBasic,
+the BASIC interpreter used on PicoMite and other Micromite devices.
+
+MMBasic is a Microsoft BASIC compatible implementation with floating point,
+integer and string variables, arrays, long variable names, and many hardware
+control features.
+
+Supported devices:
+  - Raspberry Pi Pico (RP2040)
+  - Raspberry Pi Pico 2 (RP2350/RP2350B)
+  - Raspberry Pi Pico W and Pico 2 W (WiFi)
+  - Third-party RP2040/RP2350 modules
+
+Official documentation: http://geoffg.net/picomite.html
+
+==============================================================================
+2. INSTALLATION                                             *mmbasic-install*
+
+Manual Installation:~
+
+  1. Copy the plugin files to your Vim directory:
+     
+     Unix/Linux/Mac:
+       ~/.vim/syntax/mmbasic.vim
+       ~/.vim/ftdetect/mmbasic.vim
+       ~/.vim/ftplugin/mmbasic.vim
+       ~/.vim/doc/mmbasic.txt
+
+     Windows:
+       ~/vimfiles/syntax/mmbasic.vim
+       ~/vimfiles/ftdetect/mmbasic.vim
+       ~/vimfiles/ftplugin/mmbasic.vim
+       ~/vimfiles/doc/mmbasic.txt
+
+  2. Generate help tags:
+     :helptags ~/.vim/doc     (Unix/Linux/Mac)
+     :helptags ~/vimfiles/doc (Windows)
+
+Using a Plugin Manager:~
+
+  Vim-Plug: >
+    Plug 'path/to/mmbasic-vim'
+<
+  Vundle: >
+    Plugin 'path/to/mmbasic-vim'
+<
+  Pathogen: >
+    cd ~/.vim/bundle
+    git clone path/to/mmbasic-vim
+<
+
+==============================================================================
+3. FEATURES                                                *mmbasic-features*
+
+- Syntax highlighting for all MMBasic keywords
+- File type detection for .bas and .mmb files
+- Automatic indentation
+- Comment string configuration
+- Code folding for SUB/FUNCTION blocks
+- Matchit support for block structures
+- Abbreviations for common commands
+
+Highlighted elements:
+  - Keywords (IF, FOR, WHILE, SUB, FUNCTION, etc.)
+  - Built-in functions (PRINT, INPUT, SIN, COS, etc.)
+  - Hardware commands (SETPIN, PWM, I2C, SPI, etc.)
+  - Graphics commands (PIXEL, LINE, CIRCLE, TEXT, etc.)
+  - Comments (' or REM)
+  - Strings ("...")
+  - Numbers (decimal, hex &H, binary &B, octal &O)
+  - Pin names (GP0-GP47)
+
+==============================================================================
+4. SYNTAX HIGHLIGHTING                                       *mmbasic-syntax*
+
+The syntax file recognizes all MMBasic language elements:
+
+Control Flow:~
+  IF THEN ELSE ELSEIF ENDIF
+  FOR TO STEP NEXT
+  DO LOOP WHILE WEND UNTIL
+  SELECT CASE END SELECT
+  GOTO GOSUB RETURN
+
+Program Structure:~
+  SUB END SUB
+  FUNCTION END FUNCTION
+  DIM LOCAL STATIC CONST
+
+Hardware Commands:~
+  SETPIN PIN PWM SERVO
+  I2C I2C2 SPI SPI2
+  COM1 COM2 SERIAL
+  ADC RTC WATCHDOG
+
+Graphics:~
+  CLS PIXEL LINE BOX CIRCLE
+  TEXT FONT COLOUR COLOR
+  BLIT SPRITE FRAMEBUFFER
+
+WiFi (WebMite):~
+  WEB TFTP NTP EMAIL
+
+Numbers:~
+  Decimal: 123, 45.67
+  Hex:     &HFF, &H1A2B
+  Binary:  &B1010, &B11110000
+  Octal:   &O777, &O123
+
+Comments:~
+  ' This is a comment
+  REM This is also a comment
+
+==============================================================================
+5. FILETYPE SETTINGS                                      *mmbasic-filetype*
+
+When a .bas or .mmb file is opened, the following settings are applied:
+
+  commentstring='\ %s     Comment format for plugins
+  tabstop=2               Tab width
+  shiftwidth=2            Indent width  
+  expandtab               Use spaces instead of tabs
+  autoindent              Auto-indent new lines
+  smartindent             Smart indentation
+  foldmethod=syntax       Fold SUB/FUNCTION blocks
+
+Abbreviations:~
+  pr  -> PRINT
+  inp -> INPUT
+  fn  -> FUNCTION
+  sb  -> SUB
+
+==============================================================================
+6. QUICK REFERENCE                                         *mmbasic-quickref*
+
+Common Commands:~
+  PRINT expression        Output to console
+  INPUT "prompt", var     Get user input
+  DIM var AS type         Declare variable
+  
+  IF condition THEN       Conditional execution
+    statements
+  END IF
+
+  FOR i = 1 TO 10         Loop with counter
+    statements
+  NEXT i
+
+  SUB name(params)        Define subroutine
+    statements
+  END SUB
+
+Pin Configuration:~
+  SETPIN GP21, DOUT       Set pin as digital output
+  PIN(GP21) = 1           Set pin high
+  x = PIN(GP2)            Read digital pin
+  v = PIN(GP26)           Read analog pin (0-4095)
+
+I2C Communication:~
+  I2C OPEN 100, 1000      Open I2C at 100kHz
+  I2C WRITE addr, ...     Write to device
+  I2C READ addr, ...      Read from device
+  I2C CLOSE               Close I2C
+
+SPI Communication:~
+  SETPIN GP2, SPI CLK     Configure SPI pins
+  SETPIN GP3, SPI TX
+  SETPIN GP4, SPI RX
+  SPI OPEN 1000, 0, 8     Open SPI
+  SPI WRITE ...           Send data
+  SPI CLOSE               Close SPI
+
+Graphics:~
+  CLS                     Clear screen
+  PIXEL x, y, color       Draw pixel
+  LINE x1,y1,x2,y2,color  Draw line
+  BOX x,y,w,h,color       Draw rectangle
+  CIRCLE x,y,r,color      Draw circle
+  TEXT x,y,"text","LT",2  Display text
+
+For complete documentation, see:
+  http://geoffg.net/Downloads/picomite/PicoMite_User_Manual.pdf
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
